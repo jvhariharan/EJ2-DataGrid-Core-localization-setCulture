@@ -1,0 +1,93 @@
+﻿
+<div>
+    <ejs-grid id="Grid" locale="fr" dataSource="ViewBag.DataSource" allowFiltering="true" allowPaging="true">
+        <e-grid-filterSettings type="Excel"></e-grid-filterSettings>
+        <e-grid-pagesettings pageCount="4" pageSize="5"></e-grid-pagesettings>
+        <e-grid-columns>
+            <e-grid-column field="OrderID" headerText="Order ID" textAlign="Right" width="120"></e-grid-column>
+            <e-grid-column field="CustomerID" headerText="Customer Name" width="150"></e-grid-column>
+            <e-grid-column field="Freight" headerText="Freight" format="N2" width="120"></e-grid-column>
+            <e-grid-column field="OrderDate" headerText="Order Date"  type="date" format="yMd" width="10%"></e-grid-column>
+            <e-grid-column field="ShipCountry" headerText="Ship Country" width="150"></e-grid-column>
+        </e-grid-columns>
+    </ejs-grid>
+</div>
+
+<script>
+
+    ej.base.L10n.load({
+        'fr': {
+            'grid': {
+                'StartsWith': 'Commence par',
+                'EndsWith': 'Finit par',
+                'Equal': 'Egal',
+                'Search': 'Rechercher',
+                'ClearFilter': 'Effacer les filtres',
+                'Contains': 'Contient',
+                'NotEqual': 'Pas Egal',
+                'Matchs': 'Correspondance',
+                'LessThan': 'Moins que',
+                'LessThanOrEqual': 'Moins que ou égal',
+                'GreaterThan': 'Plus que',
+                'GreaterThanOrEqual': 'Plus que ou égal',
+                'TextFilter': 'Filtre texte',
+                'NumberFilter': 'Filtre nombre',
+                'DateFilter': 'Filtre date',
+                'MatchCase': 'Cas de correspondance',
+                'Between': 'Entre',
+                'CustomFilter': 'Filtre personnalisé',
+                'AND': 'ET',
+                'OR': 'OU',
+                'SelectAll': 'Tout sélectionner',
+                'FilterMenu': 'Menu filtre',
+                'CancelButton': 'Annuler',
+                'GroupDropArea': 'Faîtes glisser une entête de colonne ici pour regrouper les éléments entre eux',
+                'EmptyRecord': 'Aucun élément à afficher',
+                'CustomFilterPlaceHolder': 'Entrer la valeur',
+                'ShowRowsWhere': 'Montrer les lignes ou',
+                'Items': 'Articles',
+                'Item': 'Article',
+                'pagerAllDropDown': 'Articles'
+            },
+             'pager': {
+                'currentPageInfo': '{0} von {1} Seiten',
+                 'totalItemsInfo': '({0} articles)',
+                'firstPageTooltip': 'Zur ersten Seite',
+                'lastPageTooltip': 'Zur letzten Seite',
+                'nextPageTooltip': 'Zur nächsten Seite',
+                'previousPageTooltip': 'Zurück zur letzten Seit',
+                'nextPagerTooltip': 'Zum nächsten Pager',
+                'previousPagerTooltip': 'Zum vorherigen Pager'
+            }
+        }
+    });
+
+    function loadCultureFiles(name) {
+        ej.base.setCulture(name);
+        var files = ['ca-gregorian.json', 'numbers.json', 'timeZoneNames.json'];
+        if (name === 'fr') {
+            files.push('numberingSystems.json');
+        }
+        var loader = ej.base.loadCldr;
+        var loadCulture = function (prop) {
+            var val, ajax;
+            if (name === 'fr' && prop === files.length - 1) {
+                ajax = new ej.base.Ajax(location.origin + '/../../scripts/cldr-data/supplemental/' + files[prop], 'GET', false);
+            } else {
+                ajax = new ej.base.Ajax(location.origin + '/../../scripts/cldr-data/main/' + name + '/' + files[prop], 'GET', false);
+            }
+            ajax.onSuccess = function (value) {
+                val = value;
+            };
+            ajax.send();
+            loader(JSON.parse(val));
+        };
+        for (var prop = 0; prop < files.length; prop++) {
+            loadCulture(prop);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        loadCultureFiles('fr');
+    });
+</script>
